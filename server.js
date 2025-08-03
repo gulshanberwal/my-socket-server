@@ -21,11 +21,19 @@ io.on('connection', (socket) => {
   socket.on('join', ({ senderId, receiverId }) => {
     const room = [senderId, receiverId].sort().join('-');
     socket.join(room);
+    console.log(`User ${socket.id} joined room ${room}`);
   });
 
   socket.on('send-message', (message) => {
     const room = [message.sender, message.receiver].sort().join('-');
     io.to(room).emit('new-message', message);
+    console.log(`Sending message to room ${room}`, message);
+  });
+
+  socket.on('read-message', ({ messageId, sender, receiver }) => {
+    const room = [sender, receiver].sort().join('-');
+    io.to(room).emit('message-read', { messageId });
+    console.log(`Message ${messageId} marked as read in room ${room}`);
   });
 
   socket.on('disconnect', () => {
