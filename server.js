@@ -25,7 +25,7 @@ io.on('connection', (socket) => {
 
   socket.on('send-message', (message) => {
     const room = [message.sender, message.receiver].sort().join('-');
-    io.to(room).emit('receive-message', message);
+    io.to(room).emit('new-message', message);
   });
 
   socket.on('disconnect', () => {
