@@ -10,7 +10,7 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Replace * with your domain in production
+    origin: "http://localhost:3000", // Replace * with your domain in production
     methods: ["GET", "POST"]
   }
 });
