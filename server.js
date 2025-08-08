@@ -10,10 +10,11 @@ app.use(cors());
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // Replace * with your domain in production
+    origin: "https://inkly-log.vercel.app", // Replace * with your domain in production
     methods: ["GET", "POST"]
   }
 });
+
 
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
@@ -28,12 +29,6 @@ io.on('connection', (socket) => {
     const room = [message.sender, message.receiver].sort().join('-');
     io.to(room).emit('new-message', message);
     console.log(`Sending message to room ${room}`, message);
-  });
-
-  socket.on('read-message', ({ messageId, sender, receiver }) => {
-    const room = [sender, receiver].sort().join('-');
-    io.to(room).emit('message-read', { messageId });
-    console.log(`Message ${messageId} marked as read in room ${room}`);
   });
 
   socket.on('disconnect', () => {
